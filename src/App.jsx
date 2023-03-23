@@ -28,13 +28,13 @@ function App() {
           <div
             className={`${
               showMenu ? "absolute" : "hidden"
-            } z-50 bg-base-100 min-h-screen flex md:static`}
+            } z-50 bg-base-100 min-h-screen flex md:static md:block`}
           >
-            <div className=" border-r border-gray-700">
+            <div className="border-r border-gray-700 h-screen">
               <Menu />
             </div>
             <div
-              className="bg-base-300 p-2 rounded-r-lg h-fit cursor-pointer"
+              className="bg-base-300 p-2 rounded-r-lg h-fit cursor-pointer md:hidden"
               onClick={() => setShowMenu(false)}
             >
               <BsXLg />

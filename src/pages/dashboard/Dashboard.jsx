@@ -23,7 +23,7 @@ const Dashboard = () => {
             <span className="mr-2">2.</span>
             <span>Perbandingan penilaian/pertimbangan</span>
           </h4>
-          <div class="not-prose ml-7">
+          <div className="not-prose ml-7">
             <div className="overflow-x-auto">
               <table className="table table-compact w-full">
                 <thead>
@@ -112,7 +112,7 @@ const Dashboard = () => {
             <span className="mr-2">3.</span>
             <span>Consistency Ratio</span>
           </h4>
-          <div class="not-prose ml-7">
+          <div className="not-prose ml-7">
             <div className="overflow-x-auto">
               <table className="table table-compact w-full">
                 <thead>

@@ -106,7 +106,7 @@ const NilaiKriteria = ({ dtKriteria }) => {
 
   useEffect(() => {
     countColoum();
-  }, [inputValues]);
+  }, [inputValues, dtNilaiKriteria]);
 
   useEffect(() => {
     // mengambil dataMatriks dari localstorage
@@ -122,7 +122,7 @@ const NilaiKriteria = ({ dtKriteria }) => {
       <h4 className="text-xl font-bold">Nilai Kriteria</h4>
       <p>Tekan enter untuk menyimpan data nilai kriteria</p>
       {/* table Nilai*/}
-      <div className="mt-4">
+      <div className="mt-2">
         <table className="table table-zebra w-full" ref={tableRef}>
           <tbody>
             <tr>

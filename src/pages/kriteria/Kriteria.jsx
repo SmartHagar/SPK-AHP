@@ -15,9 +15,24 @@ const Kriteria = () => {
   // state
   const [id, setId] = useState(false);
   const [dtEdit, setDtEdit] = useState(false);
+  // daftar IR
+  const IR = [
+    { om: 1, ri: 0 },
+    { om: 2, ri: 0 },
+    { om: 3, ri: 0.58 },
+    { om: 4, ri: 0.9 },
+    { om: 5, ri: 1.12 },
+    { om: 6, ri: 1.24 },
+    { om: 7, ri: 1.32 },
+    { om: 8, ri: 1.41 },
+    { om: 9, ri: 1.46 },
+    { om: 10, ri: 1.49 },
+  ];
   // get data
   useEffect(() => {
     setKriteria({});
+    // menyimpan IR pada local storage
+    localStorage.setItem("IR", JSON.stringify(IR));
 
     return () => {};
   }, []);
@@ -32,7 +47,7 @@ const Kriteria = () => {
     setId(id);
   };
   // aksi hapus
-  const deletData = async (status) => {
+  const deletData = async () => {
     await removeData(id);
     setId(false);
   };
