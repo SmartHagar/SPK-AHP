@@ -6,9 +6,8 @@ import { devtools } from "zustand/middleware";
 const useKriteria = create(
   devtools((set, get) => ({
     dtKriteria: [],
-    setKriteria: async ({}) => {
+    setKriteria: async () => {
       try {
-        // @ts-ignore
         const local = JSON.parse(localStorage.getItem("kriteria")) || [];
         const localSorted = local.sort((a, b) => {
           if (a.nama < b.nama) {
@@ -37,7 +36,6 @@ const useKriteria = create(
           dtKriteria: [row, ...prevState.dtKriteria],
         }));
         // mengambil isi state
-        // @ts-ignore
         const isiState = get().dtKriteria;
         // konversi json ke string
         // tambahkan ke localstorage
@@ -60,7 +58,6 @@ const useKriteria = create(
           dtKriteria: prevState.dtKriteria.filter((item) => item.id !== id),
         }));
         // mengambil isi state
-        // @ts-ignore
         const isiState = get().dtKriteria;
         // konversi json ke string
         // tambahkan ke localstorage
@@ -92,7 +89,6 @@ const useKriteria = create(
         }));
         // simpan data
         // mengambil isi state
-        // @ts-ignore
         const isiState = get().dtKriteria;
         // konversi json ke string
         // tambahkan ke localstorage

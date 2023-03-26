@@ -6,9 +6,8 @@ import { devtools } from "zustand/middleware";
 const useAlternatif = create(
   devtools((set, get) => ({
     dtAlternatif: [],
-    setAlternatif: async ({}) => {
+    setAlternatif: async () => {
       try {
-        // @ts-ignore
         const local = JSON.parse(localStorage.getItem("alternatif")) || [];
         const localSorted = local.sort((a, b) => {
           if (a.nama < b.nama) {
@@ -37,7 +36,6 @@ const useAlternatif = create(
           dtAlternatif: [row, ...prevState.dtAlternatif],
         }));
         // mengambil isi state
-        // @ts-ignore
         const isiState = get().dtAlternatif;
         // konversi json ke string
         // tambahkan ke localstorage
@@ -60,7 +58,6 @@ const useAlternatif = create(
           dtAlternatif: prevState.dtAlternatif.filter((item) => item.id !== id),
         }));
         // mengambil isi state
-        // @ts-ignore
         const isiState = get().dtAlternatif;
         // konversi json ke string
         // tambahkan ke localstorage
@@ -92,7 +89,6 @@ const useAlternatif = create(
         }));
         // simpan data
         // mengambil isi state
-        // @ts-ignore
         const isiState = get().dtAlternatif;
         // konversi json ke string
         // tambahkan ke localstorage

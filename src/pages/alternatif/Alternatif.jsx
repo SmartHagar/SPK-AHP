@@ -12,7 +12,7 @@ const Alternatif = () => {
   // context
   const { showModal, setShowModal } = useContext(ShowModalContext);
   // store
-  const { setAlternatif, dtAlternatif, addData, removeData } = useAlternatif();
+  const { setAlternatif, dtAlternatif, removeData } = useAlternatif();
   // state
   const [id, setId] = useState(false);
   const [dtEdit, setDtEdit] = useState(false);

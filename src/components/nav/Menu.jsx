@@ -17,10 +17,6 @@ const listMenus = [
     to: "alternatif",
   },
   {
-    name: "Nilai",
-    to: "nilai",
-  },
-  {
     name: "Perhitungan",
     to: "perhitungan",
   },

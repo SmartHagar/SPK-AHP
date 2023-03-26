@@ -11,7 +11,7 @@ const Kriteria = () => {
   // context
   const { showModal, setShowModal } = useContext(ShowModalContext);
   // store
-  const { setKriteria, dtKriteria, addData, removeData } = useKriteria();
+  const { setKriteria, dtKriteria, removeData } = useKriteria();
   // state
   const [id, setId] = useState(false);
   const [dtEdit, setDtEdit] = useState(false);
