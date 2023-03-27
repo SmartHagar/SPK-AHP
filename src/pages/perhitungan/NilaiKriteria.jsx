@@ -2,11 +2,14 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import useNilaiKriteria from "../../store/nilaiKriteria";
 import BobotKriteria from "./BobotKriteria";
 
 const NilaiKriteria = ({ dtKriteria }) => {
+  // store
+  const { setNilaiKriteria, dtNilaiKriteria, addData } = useNilaiKriteria();
+
   const [inputValues, setInputValues] = useState([]);
-  const [dtNilaiKriteria, setDtNilaiKriteria] = useState([]);
   const tableRef = useRef();
 
   // pembagian
@@ -86,7 +89,7 @@ const NilaiKriteria = ({ dtKriteria }) => {
       }
 
       // memisahkan nilai kriteria_id berdasarkan -
-      const splitKriteriaId = kriteria_id.split("-");
+      const splitKriteriaId = kriteria_id.split("#");
       const kriteria_id_a = splitKriteriaId[0];
       const kriteria_id_b = splitKriteriaId[1];
 
@@ -99,9 +102,7 @@ const NilaiKriteria = ({ dtKriteria }) => {
       });
     });
     // simpan matriks kriteria ke localStorage
-    console.log({ nilaiKriteria });
-    setDtNilaiKriteria(nilaiKriteria);
-    localStorage.setItem("nilaiKriteria", JSON.stringify(nilaiKriteria));
+    addData(nilaiKriteria);
   };
 
   useEffect(() => {
@@ -109,13 +110,10 @@ const NilaiKriteria = ({ dtKriteria }) => {
   }, [inputValues, dtNilaiKriteria]);
 
   useEffect(() => {
-    // mengambil dataMatriks dari localstorage
-    const dtNilaiKriteria =
-      JSON.parse(localStorage.getItem("nilaiKriteria")) || [];
-    setDtNilaiKriteria(dtNilaiKriteria);
+    setNilaiKriteria();
 
     return () => {};
-  }, []);
+  }, [inputValues]);
 
   return (
     <div>
@@ -149,7 +147,7 @@ const NilaiKriteria = ({ dtKriteria }) => {
                         <td
                           key={col.id}
                           data-col={colIndex}
-                          data-kriteria_id={`${row.id}-${col.id}`}
+                          data-kriteria_id={`${row.id}#${col.id}`}
                         >
                           {newValue}
                         </td>
@@ -166,7 +164,7 @@ const NilaiKriteria = ({ dtKriteria }) => {
                         <td
                           key={col.id}
                           data-col={colIndex}
-                          data-kriteria_id={`${row.id}-${col.id}`}
+                          data-kriteria_id={`${row.id}#${col.id}`}
                         >
                           <input
                             type="number"
@@ -202,7 +200,7 @@ const NilaiKriteria = ({ dtKriteria }) => {
                         <td
                           key={col.id}
                           data-col={colIndex}
-                          data-kriteria_id={`${row.id}-${col.id}`}
+                          data-kriteria_id={`${row.id}#${col.id}`}
                         >
                           {nilai || nilaiMatriks}
                         </td>

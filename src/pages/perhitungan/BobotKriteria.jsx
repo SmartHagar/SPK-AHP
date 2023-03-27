@@ -2,14 +2,17 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
+import usePrioritasKriteria from "../../store/prioritasKriteria";
 
 const BobotKriteria = ({ dtKriteria, dtNilaiKriteria }) => {
+  // store
+  const { setPrioritsKriteria, dtPrioritasKriteria, addData } =
+    usePrioritasKriteria();
   // state
   const [bobotMatriks, setBobotMatriks] = useState([]);
   const [jmlKriteria, setJmlKriteria] = useState(0);
-  const [prioritas, setPrioritas] = useState([]);
   const [filterJumlah, setFilterJumlah] = useState([]);
-  const [ci, setCi] = useState({});
+  const [cosisten, setCosisten] = useState({});
   const tableRef = useRef();
 
   const hitungBobot = () => {
@@ -32,7 +35,7 @@ const BobotKriteria = ({ dtKriteria, dtNilaiKriteria }) => {
         const { kriteria_id_a, kriteria_id_b, nilai } = item;
 
         if (kriteria_id_b === sum_id_b) {
-          const bobot = (nilai / jumlah_nilai_b).toFixed(2);
+          const bobot = (nilai / jumlah_nilai_b).toFixed(3);
           result.push({
             kriteria_id_a,
             kriteria_id_b,
@@ -59,11 +62,11 @@ const BobotKriteria = ({ dtKriteria, dtNilaiKriteria }) => {
       const prioritas = jumlah / jmlKriteria;
       result.push({
         kriteria_id_a: sum_id_a,
-        bobot: jumlah.toFixed(2),
-        prioritas: prioritas.toFixed(2),
+        bobot: jumlah.toFixed(3),
+        prioritas: prioritas.toFixed(3),
       });
     });
-    setPrioritas(result);
+    addData(result);
   };
 
   const countCI = () => {
@@ -71,7 +74,7 @@ const BobotKriteria = ({ dtKriteria, dtNilaiKriteria }) => {
     // mengambil bobotMatriks
     // jika kriteria_id_a pada prioritas === kriteria_id_b pada bobotMatriks maka dikalikan kemudian dijumlahkan
     const filterJumlah = [];
-    prioritas.map((current) => {
+    dtPrioritasKriteria.map((current) => {
       const kriteriaA = current.kriteria_id_a;
       const prioritas = parseFloat(current.prioritas);
 
@@ -84,12 +87,10 @@ const BobotKriteria = ({ dtKriteria, dtNilaiKriteria }) => {
         jumlah_nilai: nilai[0],
       });
     }, []);
-    console.log({ filterJumlah });
     const maks = filterJumlah
       .map((item) => item.jumlah_nilai * item.prioritas)
       .reduce((a, b) => a + b, 0)
-      .toFixed(2);
-    console.log({ maks });
+      .toFixed(3);
 
     const CI = (maks - jmlKriteria) / (jmlKriteria - 1);
     // mengambil IR dari localStorage
@@ -98,7 +99,12 @@ const BobotKriteria = ({ dtKriteria, dtNilaiKriteria }) => {
     const nilaiIR = IR.find((item) => item.om === jmlKriteria);
     // // mencari nilai CR
     const nilaiCR = CI / nilaiIR?.ri;
-    setCi({ maks, ci: CI.toFixed(3), ri: nilaiIR?.ri, cr: nilaiCR.toFixed(3) });
+    setCosisten({
+      maks,
+      ci: CI.toFixed(3),
+      ri: nilaiIR?.ri,
+      cr: nilaiCR.toFixed(3),
+    });
 
     setFilterJumlah(filterJumlah);
   };
@@ -106,20 +112,23 @@ const BobotKriteria = ({ dtKriteria, dtNilaiKriteria }) => {
   useEffect(() => {
     hitungBobot();
     setJmlKriteria(dtKriteria.length);
-    totalBobot();
     return () => {};
   }, [dtNilaiKriteria, jmlKriteria]);
 
   useEffect(() => {
+    totalBobot();
+    // setPrioritsKriteria();
+  }, [bobotMatriks, dtNilaiKriteria]);
+
+  useEffect(() => {
     countCI();
-  }, [bobotMatriks]);
+  }, [dtPrioritasKriteria]);
 
   return (
     <div className="flex flex-col gap-4">
       <div>
         <h4 className="text-xl font-bold">Bobot Kriteria</h4>
         <div className="mt-2">
-          {console.log({ bobotMatriks })}
           <table className="table table-zebra w-full" ref={tableRef}>
             <tbody>
               <tr>
@@ -143,15 +152,15 @@ const BobotKriteria = ({ dtKriteria, dtNilaiKriteria }) => {
                             <td key={colIndex}>{col.bobot}</td>
                           )
                       )}
-                    {prioritas &&
-                      prioritas.map(
+                    {dtPrioritasKriteria &&
+                      dtPrioritasKriteria.map(
                         (col, colIndex) =>
                           col.kriteria_id_a === row.id && (
                             <td key={colIndex}>{col.bobot}</td>
                           )
                       )}
-                    {prioritas &&
-                      prioritas.map(
+                    {dtPrioritasKriteria &&
+                      dtPrioritasKriteria.map(
                         (col, colIndex) =>
                           col.kriteria_id_a === row.id && (
                             <td key={colIndex}>{col.prioritas}</td>
@@ -174,14 +183,23 @@ const BobotKriteria = ({ dtKriteria, dtNilaiKriteria }) => {
                 .join("+")}}{${jmlKriteria}-1}\\)`}
             </MathJax>
             <MathJax style={{ fontSize: "20px" }}>
-              {`\\(CI= \\frac{${ci.maks}-${jmlKriteria}}{${jmlKriteria}-1}=${ci.ci}\\)`}
+              {`\\(CI= \\frac{${cosisten.maks}-${jmlKriteria}}{${jmlKriteria}-1}=${cosisten.ci}\\)`}
             </MathJax>
             <MathJax style={{ fontSize: "20px" }}>
-              {`\\(CR= \\frac{${ci.ci}}{${ci.ri}}=${ci.cr}\\)`}
+              {`\\(CR= \\frac{${cosisten.ci}}{${cosisten.ri}}=${cosisten.cr}\\)`}
             </MathJax>
           </div>
         </MathJaxContext>
-        {console.log({ ci })}
+        <div className="mt-2">
+          {cosisten.cr <= 0.1 ? (
+            <p>Karena nilai CR {"<="} 0.1 maka perhitungannya konsisten</p>
+          ) : (
+            <p>
+              Karena nilai CR {">="} 0.1 maka perhitungannya tidak konsisten dan
+              tidak bisa diterima mohon memasukan nilai kembali
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

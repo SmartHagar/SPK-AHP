@@ -2,7 +2,6 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import Delete from "../../components/modal/Delete";
-import Modal from "../../components/modal/Modal";
 import TableComp from "../../components/table/TableComp";
 import { ShowModalContext } from "../../context/ShowModalContext";
 import useAlternatif from "../../store/alternatif";

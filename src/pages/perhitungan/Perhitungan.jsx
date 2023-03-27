@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import useAlternatif from "../../store/alternatif";
 import useKriteria from "../../store/kriteria";
+import NilaiAlternatif from "./NilaiAlternatif";
 import NilaiKriteria from "./NilaiKriteria";
 
 const Perhitungan = () => {
@@ -26,12 +27,12 @@ const Perhitungan = () => {
       </div>
       <div className="mt-4 flex flex-col">
         <NilaiKriteria dtKriteria={dtKriteria} />
-        {/* {dtAlternatif.length > 0 && dtKriteria.length > 0 && (
+        {dtAlternatif.length > 0 && dtKriteria.length > 0 && (
           <NilaiAlternatif
             dtAlternatif={dtAlternatif}
             dtKriteria={dtKriteria}
           />
-        )} */}
+        )}
       </div>
     </div>
   );
